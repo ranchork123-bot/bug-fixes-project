@@ -122,3 +122,40 @@ manifest.json → background.js → rotation.js → scheduler.js
 **Last fix:** background.js (JS render wait) + task-executor.js (page_body inject)
 **Next step:** Deploy + reload + run Rust task — should extract real post in ~3 steps
 **Still broken:** KEY-SYNC (real provider keys), content.js skip-nav (confirm deployed)
+━━━ PROGRESS.md ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Working on: BUG #13 — context.page_body never reaches llm_generate
+Last fix: background.js — merge raw.saved into context after each step
+Result: APPLIED — NOT CONFIRMED (v14.2 still showing, old code running)
+
+CRITICAL — FILES NOT DEPLOYING:
+All fixes are in output files but extension still runs old code.
+Version shows v14.2 across every single run.
+
+Files that MUST be deployed (download from Claude outputs):
+1. background.js — context merge fix (BUG #13) + stale tab fix
+2. src/task-executor.js — old.reddit rewrite + read_body poll + page_body inject
+3. src/agent-planner.js — {page_body} in prompt rules + maxTokens 2000
+4. content.js — isSkipNav filter
+
+Deploy steps:
+1. Download each file from Claude
+2. Replace in GitHub repo (pencil edit → paste → commit)
+3. Go to chrome://extensions
+4. Click RELOAD on Hubtique extension
+5. Check Service Worker console — should show new log messages
+6. Run task
+
+Next step after deploy confirmed:
+- Fix Pollinations intermittent failures (step 3 AI error)
+- Need src/rotation.js uploaded to fix provider fallback chain
+
+Still broken:
+- KEY-SYNC: real API keys never reach extension
+- Pollinations 502 intermittent
+
+Do not touch:
+manifest.json, src/db.js, src/notifier.js, src/scheduler.js,
+root/rotation.js, supabase/migrations/**, src/components/ui/**
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
