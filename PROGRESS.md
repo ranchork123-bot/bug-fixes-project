@@ -108,3 +108,14 @@ manifest.json → background.js → rotation.js → scheduler.js
   → task-executor.js → db.js → notifier.js → content.js
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━ UPDATE PROGRESS.md ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Working on:** BUG #6 + #7 — skip-nav + Pollinations
+**Last fix:** content.js (isSkipNav filter) + agent-planner.js (model+tokens)
+**Result:** Applied — needs test
+**Next step:** Run Amazon task, confirm agent types into search input
+**Still broken:** KEY-SYNC (real provider keys never reach extension)
+**Do not touch:** manifest.json, src/db.js, src/notifier.js, src/scheduler.js
+**Last fix:** background.js stale tab + content.js skip-nav + agent-planner.js Pollinations
+**Next step:** Deploy all 3, reload, run Rust task — should go to Reddit directly
+**Still broken:** KEY-SYNC (real provider keys), content.js skip-nav not confirmed deployed yet
