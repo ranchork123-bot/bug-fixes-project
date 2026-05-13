@@ -103,11 +103,12 @@ truncated LLM JSON mid-response causing parse crash.
 **Fix:** model → 'openai', maxTokens 800 → 2000
 **Status:** ✅ Fixed — agent-planner.js updated
 
-━━━ UPDATE PROGRESS.md ━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-**Working on:** BUG #6 + #7 — skip-nav + Pollinations
-**Last fix:** content.js (isSkipNav filter) + agent-planner.js (model+tokens)
-**Result:** Applied — needs test
-**Next step:** Run Amazon task, confirm agent types into search input
-**Still broken:** KEY-SYNC (real provider keys never reach extension)
-**Do not touch:** manifest.json, src/db.js, src/notifier.js, src/scheduler.js
+
+
+## BUG #8 — Stale tab inherited between tasks
+**File:** background.js line 1693 — run_agent handler
+**Error:** New task starts on previous task's page (Amazon) instead of navigating fresh
+**Root cause:** activeAgentTabId never cleared between runs — agent reuses whatever tab was open
+**Fix:** await chrome.storage.local.remove('activeAgentTabId') after _loopGuard.reset()
+**Status:** ✅ Fixed
