@@ -83,3 +83,31 @@
 **Status:** ❌ Still broken — highest priority after BUG #5
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━ ADD TO ERRORS.md ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+## BUG #6 — Skip-nav in snapshot causes LLM to click wrong elements
+**File:** content.js — add() function ~line 158
+**Error:** Agent clicks "Search, alt, forward slash" for 30 steps
+**Root cause:** add() had no filter — skip-nav anchor links and keyboard
+hint elements were included in the snapshot the LLM reads. LLM copied
+the @eN ref directly, bypassing resolveLabel entirely.
+**Fix:** Added isSkipNav() guard at top of add() — filters aria-hidden,
+#anchor hrefs, and labels matching keyboard shortcut patterns.
+**Status:** ✅ Fixed — content.js updated
+
+## BUG #7 — Pollinations model name changed, maxTokens too low
+**File:** src/agent-planner.js lines 128, 494
+**Error:** All AI providers failed / JSON parse crash at position 932
+**Root cause:** Pollinations renamed 'openai-large' → 'openai'. maxTokens=800
+truncated LLM JSON mid-response causing parse crash.
+**Fix:** model → 'openai', maxTokens 800 → 2000
+**Status:** ✅ Fixed — agent-planner.js updated
+
+━━━ UPDATE PROGRESS.md ━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+**Working on:** BUG #6 + #7 — skip-nav + Pollinations
+**Last fix:** content.js (isSkipNav filter) + agent-planner.js (model+tokens)
+**Result:** Applied — needs test
+**Next step:** Run Amazon task, confirm agent types into search input
+**Still broken:** KEY-SYNC (real provider keys never reach extension)
+**Do not touch:** manifest.json, src/db.js, src/notifier.js, src/scheduler.js
