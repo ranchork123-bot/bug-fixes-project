@@ -112,3 +112,18 @@ truncated LLM JSON mid-response causing parse crash.
 **Root cause:** activeAgentTabId never cleared between runs — agent reuses whatever tab was open
 **Fix:** await chrome.storage.local.remove('activeAgentTabId') after _loopGuard.reset()
 **Status:** ✅ Fixed
+## BUG #9 — Reddit posts not rendered when read_body fires
+**File:** background.js — waitForPageSettle() line 582
+**Error:** read_body returns only nav skeleton, posts are empty
+**Root cause:** waitForPageSettle fires on status=complete (HTML load)
+but Reddit is React-rendered — posts appear 3-4s later
+**Fix:** JS_HEAVY_HOSTS list — Reddit/Twitter get +3500ms extra settle
+**Status:** ✅ Fixed
+
+## BUG #10 — llm_generate loops 28 times with no page content
+**File:** src/task-executor.js — llmGenerateStep() line 819
+**Error:** LLM hallucinates data, says "please provide page body"
+**Root cause:** llm_generate prompt never included ctx.page_body —
+LLM had no actual content to extract from
+**Fix:** Auto-inject ctx.page_body into prompt if present
+**Status:** ✅ Fixed
