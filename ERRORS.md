@@ -127,3 +127,14 @@ but Reddit is React-rendered — posts appear 3-4s later
 LLM had no actual content to extract from
 **Fix:** Auto-inject ctx.page_body into prompt if present
 **Status:** ✅ Fixed
+━━━ ADD TO ERRORS.md ━━━━━━━━━━━━━━━━━━━━━━━━━
+
+## BUG #13 — context.page_body never set — root cause of all llm_generate failures
+**File:** background.js — executePlanWithFullStack() line 519
+**Error:** llm_generate always says "I don't see page content" across ALL tasks
+**Root cause:** executePlanWithFullStack called executeStep(step, context) but
+never merged the returned saved values back into context. page_body from
+read_body was returned but immediately discarded. ctx.page_body was always
+undefined when llm_generate ran.
+**Fix:** After each step, merge raw.saved + raw.body/text/navigated into context
+**Status:** ✅ Fixed — universal, fixes all read+extract tasks
