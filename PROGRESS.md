@@ -119,3 +119,6 @@ manifest.json → background.js → rotation.js → scheduler.js
 **Last fix:** background.js stale tab + content.js skip-nav + agent-planner.js Pollinations
 **Next step:** Deploy all 3, reload, run Rust task — should go to Reddit directly
 **Still broken:** KEY-SYNC (real provider keys), content.js skip-nav not confirmed deployed yet
+**Last fix:** background.js (JS render wait) + task-executor.js (page_body inject)
+**Next step:** Deploy + reload + run Rust task — should extract real post in ~3 steps
+**Still broken:** KEY-SYNC (real provider keys), content.js skip-nav (confirm deployed)
