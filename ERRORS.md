@@ -160,3 +160,23 @@ read_body was returned but immediately discarded. ctx.page_body was always
 undefined when llm_generate ran.
 **Fix:** After each step, merge raw.saved + raw.body/text/navigated into context
 **Status:** ✅ Fixed — universal, fixes all read+extract tasks
+## BUG #1 — KEY-SYNC: Extension has no API keys
+**File:** ApiVault.tsx  **Line:** saveApiKey handler
+**Error:** Extension: No API keys configured — agent cannot call LLM
+**Root cause:** Vault saves keys to Supabase; extension reads chrome.storage.local; never synced
+**Status:** ❌ still broken — awaiting ApiVault.tsx upload
+**Affects:** rotation.js (all providers score 0), CometBrowser.tsx callAI
+
+## BUG #2 — llm_generate infinite loop (26 consecutive calls)
+**File:** CometBrowser.tsx  **Line:** Step 4 same-action guard
+**Error:** Agent calls llm_generate 26 times without navigating
+**Root cause:** hasParam=false for llm_generate → unique step-index key each time → guard never fires
+**Status:** ❌ patch written, not yet tested
+**Affects:** Agent never completes multi-step tasks, burns all 30 steps
+
+## BUG #3 — JSON truncation crash
+**File:** CometBrowser.tsx  **Line:** Step 3 parse block
+**Error:** JSON parse + repair both failed: Unterminated string at position 628
+**Root cause:** LLM response truncated mid-token; neither sanitize nor repair closes open quotes
+**Status:** ❌ patch written, not yet tested
+**Affects:** consecutiveAIErrors++ on every truncated response → agent aborts after 3
