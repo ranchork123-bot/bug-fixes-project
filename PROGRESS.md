@@ -183,3 +183,11 @@ both require well-formed strings — neither closes an open quote
 Fix: add fixTruncatedJSON() between sanitize and repair paths
 
 LINKED FILES TO TEST AFTER: rotation.js (Bug 1 only), agent-planner.js (none)
+
+**Working on:** BUG #2 (llm_generate loop) + BUG #3 (JSON truncation) — patches written
+**Last fix:** CometBrowser.tsx — 4 changes: fixTruncatedJSON(), 3-layer parse, consecutiveLlmGen counter, llm_generate guard
+**Result:** Not yet tested — apply patches and run the Reddit task again
+**Next step:** Upload ApiVault.tsx to fix BUG #1 (KEY-SYNC — root cause of Pollinations-only mode)
+**Working now:** rotation.js v13.3-FIXED (all provider configs correct), extension loads
+**Still broken:** BUG #1 KEY-SYNC (no keys in extension), BUG #2+3 (patches not yet tested)
+**Do not touch:** manifest.json, src/db.js, src/notifier.js, src/scheduler.js, content.js, background.js
