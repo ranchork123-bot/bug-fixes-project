@@ -47,3 +47,18 @@ These wasted the most commits. Do not repeat under any circumstances.
 **What was changed:** Added consecutiveLlmGen counter; after 3 consecutive → force navigate to unvisited task URL or read_body
 **Result:** [ ] Not yet tested
 **Why:** Same-action guard misses parameterless actions — separate counter needed
+
+
+## Fix #12 — Shadow DOM walker for closed roots
+**Bug:** BUG #12
+**File:** src/task-executor.js — readBodyStep()
+**What:** Added walkShadow() recursive walker for open shadow roots + custom element attributes
+**Result:** ❌ Failed — Reddit uses CLOSED shadow roots, element.shadowRoot=null
+**Do not retry:** YES — closed shadow DOM cannot be walked from content scripts
+
+## Fix #13 — Reddit JSON API fetch in readBodyStep
+**Bug:** BUG #12
+**File:** src/task-executor.js — readBodyStep()
+**What:** fetch(currentUrl + '.json') before DOM read. Returns structured posts+comments.
+**Result:** ⚠️ Applied — needs test
+**Do not retry:** NO
