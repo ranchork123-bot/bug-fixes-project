@@ -180,3 +180,27 @@ undefined when llm_generate ran.
 **Root cause:** LLM response truncated mid-token; neither sanitize nor repair closes open quotes
 **Status:** ❌ patch written, not yet tested
 **Affects:** consecutiveAIErrors++ on every truncated response → agent aborts after 3
+
+
+# BUG #12 — Reddit closed shadow DOM — comments invisible to read_body
+**File:** src/task-executor.js — readBodyStep()
+**Error:** read_body returns only "Skip to main content..." forever on Reddit post pages
+**Root cause:** Reddit Shreddit uses CLOSED shadow DOM. element.shadowRoot=null. 
+innerText, textContent, and shadow walker all fail. Comments completely invisible.
+**Fix:** fetch() Reddit's .json API directly from page context before falling back 
+to DOM. Appends .json to current URL, parses posts/comments, returns clean text.
+**Status:** ✅ Fixed — universal for all Reddit URLs
+
+## BUG #13 — Agent types into Reddit reply box instead of reading comments
+**File:** src/agent-planner.js — EXECUTION_PROMPT
+**Error:** Agent clicks Reply, types into comment box trying to "read" comments
+**Root cause:** read_body returning nav only → agent panics → tries random actions
+**Fix:** BUG #12 fix resolves this — once read_body works, agent has the data
+**Status:** ✅ Fixed (via BUG #12)
+
+## BUG #14 — Files not deploying — extension loading from local folder
+**File:** All files
+**Error:** All fixes present in outputs but [BG v13.1] still showing in console
+**Root cause:** Extension loaded from Downloads\Hubtique-Extension local folder,
+NOT from GitHub. Files must be replaced in that local folder directly.
+**Status:** ✅ Diagnosed — user confirmed local folder path
