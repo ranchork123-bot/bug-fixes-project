@@ -191,3 +191,15 @@ LINKED FILES TO TEST AFTER: rotation.js (Bug 1 only), agent-planner.js (none)
 **Working now:** rotation.js v13.3-FIXED (all provider configs correct), extension loads
 **Still broken:** BUG #1 KEY-SYNC (no keys in extension), BUG #2+3 (patches not yet tested)
 **Do not touch:** manifest.json, src/db.js, src/notifier.js, src/scheduler.js, content.js, background.js
+
+
+**Working on:** BUG #12 — Reddit closed shadow DOM
+**Last fix:** src/task-executor.js — Reddit .json API fetch in readBodyStep
+**Result:** Applied — needs test
+**Next step:** Replace src\task-executor.js in Downloads\Hubtique-Extension,
+toggle extension OFF then ON, run Reddit task
+**Expected:** read_body should return "POST: Killing a Cow... COMMENT(score:312)..."
+**Working now:** KEY-SYNC ✅ autoDismiss ✅ skipNav ✅ stale tab ✅ page_body→llm ✅
+**Still broken:** Reddit read_body (fix applied, unconfirmed)
+**Do not touch:** manifest.json, src/db.js, src/notifier.js, src/scheduler.js,
+root/rotation.js, supabase/migrations/**, src/components/ui/**
