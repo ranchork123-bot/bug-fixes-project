@@ -34,3 +34,16 @@ These wasted the most commits. Do not repeat under any circumstances.
 **What to do instead:** 
 
 ---
+## Fix #1 — fixTruncatedJSON + 3-layer JSON parse
+**Bug:** BUG #3 — JSON truncation crash
+**File:** CometBrowser.tsx  **Line:** Step 3 parse block + new function after repairAndParseJSON
+**What was changed:** Added fixTruncatedJSON() function; updated parse block to try sanitize→truncFix→repair
+**Result:** [ ] Not yet tested
+**Why:** Closes open strings from cut-off LLM responses before structural repair
+
+## Fix #2 — consecutiveLlmGen counter
+**Bug:** BUG #2 — llm_generate infinite loop
+**File:** CometBrowser.tsx  **Line:** loop variables + before step 5
+**What was changed:** Added consecutiveLlmGen counter; after 3 consecutive → force navigate to unvisited task URL or read_body
+**Result:** [ ] Not yet tested
+**Why:** Same-action guard misses parameterless actions — separate counter needed
