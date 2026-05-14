@@ -119,3 +119,23 @@
 - Any version with scheduler polling < 15s — Chrome throttles it
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+## Version 4 — Reddit JSON API fix (current)
+**Date:** 2026-05-14
+**Status:** ⚠️ Applied — needs test confirmation
+**What works:** KEY-SYNC, skipNav, autoDismiss, stale tab clear,
+page_body→llm_generate, adaptive AI fallback, Cerebras/Groq working
+**What's unconfirmed:** Reddit .json fetch returning comments
+**Files changed this version:** src/task-executor.js only
+**Commit:** [paste after deploy]
+**Start from this version:** YES — best so far
+
+## DEPLOYMENT NOTE — CRITICAL
+Extension loads from: Downloads\Hubtique-Extension (local folder)
+NOT from GitHub. Always update local folder files, then toggle
+extension OFF→ON in chrome://extensions.
+Files to replace:
+- background.js → root
+- content.js → root  
+- src\task-executor.js → src subfolder
+- src\agent-planner.js → src subfolder
