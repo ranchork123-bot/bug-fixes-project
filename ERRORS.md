@@ -103,7 +103,29 @@ truncated LLM JSON mid-response causing parse crash.
 **Fix:** model → 'openai', maxTokens 800 → 2000
 **Status:** ✅ Fixed — agent-planner.js updated
 
+CONFIRMED BUG: Three bugs, priority order
 
+BUG #1 — KEY-SYNC (root cause of "No API keys configured")
+File: ApiVault.tsx  Line: wherever key is saved to Supabase
+Root cause: saveApiKey() writes to Supabase only; extension scoreProvider
+reads chrome.storage.local; the two never meet
+Fix: After Supabase save, also send key to extension via
+chrome.runtime.sendMessage({action:"saveApiKey", ...})
+NEED FILE: ApiVault.tsx — please upload it
+
+BUG #2 — llm_generate infinite loop (26 calls, no break)
+File: CometBrowser.tsx  Step 4 same-action guard
+Root cause: guard checks hasParam (label/url/value); llm_generate has none
+→ actionKey = "llm_generate:step5/6/7..." always unique → guard never fires
+Fix: separate consecutiveLlmGen counter, break+force navigate after 3
+
+BUG #3 — JSON truncation crash (steps 4, 29)
+File: CometBrowser.tsx  Step 3 parse block
+Root cause: LLM response cut off mid-token; sanitizeRawJSON/repairAndParseJSON
+both require well-formed strings — neither closes an open quote
+Fix: add fixTruncatedJSON() between sanitize and repair paths
+
+LINKED FILES TO TEST AFTER: rotation.js (Bug 1 only), agent-planner.js (none)
 
 
 ## BUG #8 — Stale tab inherited between tasks
